@@ -1,70 +1,39 @@
+/**
+ * StartScreen.js — Title screen with Play, Controls, and Settings buttons.
+ *
+ * This is the first screen the player sees after assets finish loading.
+ * Background colour matches the sky-blue used in-game (#73bde2).
+ */
+
 class StartScreen extends Phaser.Scene {
     constructor() {
-        super("startScene");
+        super('startScene');
     }
 
     create() {
+        const w = this.scale.width;
+        const h = this.scale.height;
 
-        this.cameras.main.setBackgroundColor('#73bde2');
-
-        // Title
-        this.add.text(centerX, centerY - 150, 'Forest Jump', {
+        // Game title
+        this.add.text(w / 2, h / 3, 'Forest Jump', {
             fontSize: '64px',
-            fill: '#ffffff',
-            fontStyle: 'bold'
-        }).setOrigin(0.5);
-
-        // Play Button
-        this.createButton(centerX, centerY, 'Play', () => {
-            this.scene.start('loadScene');
-        });
-
-        // Controls Button
-        this.createButton(centerX, centerY + 80, 'Controls', () => {
-            this.scene.start('controlsScene');
-        });
-
-        // Settings Button
-        this.createButton(centerX, centerY + 160, 'Settings', () => {
-            this.scene.start('settingsScene');
-        });
-    }
-
-    createButton(x, y, label, callback) {
-        const width = 250;
-        const height = 60;
-        const radius = 20;
-
-        const btn = this.add.graphics();
-
-        const drawBtn = (color, alpha) => {
-            btn.clear();
-            btn.fillStyle(color, alpha);
-            btn.fillRoundedRect(x - width/2, y - height/2, width, height, radius);
-        };
-
-        drawBtn(0x000000, 0.5);
-
-        // Invisible interactive zone on top
-        const hitArea = this.add.rectangle(x, y, width, height, 0xffffff, 0)
-            .setInteractive()
-            .setOrigin(0.5);
-
-        const text = this.add.text(x, y, label, {
-            fontSize: '28px',
+            fontStyle: 'bold',
             fill: '#ffffff'
         }).setOrigin(0.5);
 
-        hitArea.on('pointerover', () => {
-            drawBtn(0xffffff, 0.3);
-            text.setStyle({ fontSize: '30px' });
+        // Play → starts the game at Level 1
+        ButtonUI.create(this, w / 2, h / 2, 'Play', () => {
+            this.scene.start('loadScene');
         });
 
-        hitArea.on('pointerout', () => {
-            drawBtn(0x000000, 0.5);
-            text.setStyle({ fontSize: '28px' });
+        // Controls → shows the key bindings screen
+        ButtonUI.create(this, w / 2, h / 2 + 80, 'Controls', () => {
+            this.scene.start('controlsScene');
         });
 
-        hitArea.on('pointerdown', callback);
+        // Settings → FPS toggle and fullscreen
+        ButtonUI.create(this, w / 2, h / 2 + 160, 'Settings', () => {
+            this.scene.start('settingsScene');
+        });
     }
 }

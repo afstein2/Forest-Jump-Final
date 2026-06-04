@@ -1,3 +1,11 @@
+/**
+ * Load.js — Asset preloading scene.
+ *
+ * Loads every image, tilemap, spritesheet, atlas, and audio file that the
+ * game needs, then defines the player sprite animations (walk, idle, jump).
+ * Transitions immediately to the Start Screen when loading is complete.
+ */
+
 class Load extends Phaser.Scene {
     constructor() {
         super("loadScene");

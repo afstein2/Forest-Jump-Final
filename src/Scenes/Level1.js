@@ -1,4 +1,13 @@
-// Level1.js
+/**
+ * Level1.js — First platforming level.
+ *
+ * Extends the Platformer base scene and fills in the template methods
+ * with Level 1 specific data: which tilemap to load, what objects exist,
+ * where water zones are, and VFX emitter positions.
+ *
+ * When the player reaches the flag, the game transitions to Level 2.
+ */
+
 class Level1 extends Platformer {
     constructor() {
         super("platformerScene");

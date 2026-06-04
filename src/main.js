@@ -1,9 +1,18 @@
+/**
+ * Allie Stein
+ * 
+ * Platformer implementation - Final
+ * 
+ * Forest Jump
+ * 
+ */
 
-//
-// An example of putting sprites on the screen using Phaser
-// 
-// Art assets from Kenny Assets "Shape Characters" set:
-// https://kenney.nl/assets/shape-characters
+/**
+ * main.js — Phaser game configuration and boot.
+ *
+ * Creates the Phaser.Game instance with all scene classes and the
+ * rendering / scaling settings described in the design document.
+ */
 
 // debug with extreme prejudice
 "use strict"
@@ -15,6 +24,8 @@ let config = {
     render: {
         pixelArt: true  // prevent pixel art from getting blurred when scaled
     },
+
+    backgroundColor: '#73bde2', // Set Background
     physics: {
         default: 'arcade',
         arcade: {

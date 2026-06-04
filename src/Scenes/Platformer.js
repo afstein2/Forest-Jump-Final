@@ -1,10 +1,28 @@
 /**
  * Allie Stein
  * 
- * Platformer implementation - Game 3b 
+ * Platformer implementation - Final
  * 
  * Forest Jump
  * 
+ */
+
+
+/**
+ * Platformer.js — Base gameplay scene for all platforming levels.
+ *
+ * This class contains the complete game loop: tilemap rendering, player
+ * physics, object collision, water zones, camera, VFX, audio, HUD, and
+ * pause / restart handling.
+ *
+ * Level-specific subclasses (Level1, Level2) override the template methods:
+ *   - setupMap()        → which tilemap and tileset to load
+ *   - setupObjects()    → Tiled object → physics group mappings
+ *   - setupVFX()        → per-level VFX emitter configurations
+ *   - setupWaterZones() → water zone positions for this level
+ *   - onLevelComplete() → what happens when the player reaches the flag
+ *
+ * Keeping per-level data in subclasses keeps create() and update() clean.
  */
 
 class Platformer extends Phaser.Scene {

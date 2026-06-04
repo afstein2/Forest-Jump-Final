@@ -1,4 +1,11 @@
-// Level2.js
+/**
+ * Level2.js — Second (and final) platforming level.
+ *
+ * Similar to Level1 but loads a different tilemap, has two water zones,
+ * different bubble VFX positions, and transitions to the Win scene when
+ * the player reaches the flag.
+ */
+
 class Level2 extends Platformer {
     constructor() {
         super("platformerScene2");
