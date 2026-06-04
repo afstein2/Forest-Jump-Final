@@ -47,6 +47,6 @@ class Level2 extends Platformer {
     onLevelComplete() {
         my.scoreCarryOver = true;
         my.score = this.score;
-        this.scene.start("winScene");
+        this.scene.start("platformerScene3");
     }
 }

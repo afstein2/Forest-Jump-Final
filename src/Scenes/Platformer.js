@@ -76,6 +76,8 @@ class Platformer extends Phaser.Scene {
         this.setupCamera();
     }
 
+    // PHYSICS ────────────────────────────────────────────────────────────────────────────────
+
     setupPhysics() {
 
         // Fix Collison clipping
@@ -87,14 +89,14 @@ class Platformer extends Phaser.Scene {
     setupMap() {}
 
 
-    // UI  -----------------------------------------------
+    // UI ────────────────────────────────────────────────────────────────────────────────
 
     setupUI() {
 
-        
-        /* ==================================================
-        * Coin Score
-        * ================================================= */
+
+        /*╭─────────────────────────────────────────────────────╮
+        * │ Coin Score                                          │
+        * ╰─────────────────────────────────────────────────────╯ */
         if (my.score) {
             this.score = my.score;
         } else {
@@ -105,10 +107,10 @@ class Platformer extends Phaser.Scene {
         my.score = this.score;
 
 
-        
-        /* ==================================================
-        * UI Text
-        * ================================================= */
+
+        /*╭─────────────────────────────────────────────────────╮
+        * │ UI Text                                              │
+        * ╰─────────────────────────────────────────────────────╯ */
         this.scoreText = this.add.text(game.config.width / 5.2, game.config.height / 5.5, `${this.score}`, {
             fontSize: '128px', fill: '#ffffff'
         }).setScrollFactor(0).setDepth(100).setScale(0.5);
@@ -125,7 +127,7 @@ class Platformer extends Phaser.Scene {
     }
 
 
-    // OBJECTS  -----------------------------------------------
+    // 📦 OBJECTS ────────────────────────────────────────────────────────────────────────────────
 
     setupObjects() {
 
@@ -135,11 +137,11 @@ class Platformer extends Phaser.Scene {
 
 
 
-        /* ==================================================
-        * Create Objects
-        * ================================================= */
+        /*╭─────────────────────────────────────────────────────╮
+        * │ Create Objects                                      │
+        * ╰─────────────────────────────────────────────────────╯ */
 
-        // Coins ------------------------------------------------
+        // 🪙 Coins
         this.coins = this.map.createFromObjects("Objects", {
             name: "coin", key: "tilemap_sheet", frame: 151
         });
@@ -151,7 +153,7 @@ class Platformer extends Phaser.Scene {
         this.physics.world.enable(this.coins, Phaser.Physics.Arcade.STATIC_BODY);
         this.coinGroup = this.add.group(this.coins);
 
-        // Flags ------------------------------------------------
+        // 🚩 Flags
         this.flags = this.map.createFromObjects("Objects", {
             name: "flag", key: "tilemap_sheet", frame: 111
         });
@@ -163,7 +165,7 @@ class Platformer extends Phaser.Scene {
         this.physics.world.enable(this.flags, Phaser.Physics.Arcade.STATIC_BODY);
         this.flagGroup = this.add.group(this.flags);
 
-        // Spikes ------------------------------------------------
+        // Spikes
         this.spikes = this.map.createFromObjects("Objects", {
             name: "spike", key: "tilemap_sheet", frame: 68
         });
@@ -178,9 +180,9 @@ class Platformer extends Phaser.Scene {
 
 
 
-    /* ==================================================
-    * Create Water Zones
-    * ================================================= */
+    /*╭─────────────────────────────────────────────────────╮
+    * │ Create Water Zones                                  │
+    * ╰─────────────────────────────────────────────────────╯ */
     // Called by subclasses inside their setupObjects()
     // Barriers are stored and wired to the player later in setupPlayer()
     setupWaterZones(configs) {
@@ -213,13 +215,13 @@ class Platformer extends Phaser.Scene {
     }
 
 
-    // PLAYER  ---------------------------------------------------------
+    // 🧍 PLAYER ────────────────────────────────────────────────────────────────────────────────
 
     setupPlayer() {
 
-        /* ==================================================
-        * Create Player
-        * ================================================= */
+        /*╭─────────────────────────────────────────────────────╮
+        * │ Create Player                                       │
+        * ╰─────────────────────────────────────────────────────╯ */
         my.sprite.player = this.physics.add.sprite(
             this.playerStart.x,
             this.playerStart.y,
@@ -231,9 +233,9 @@ class Platformer extends Phaser.Scene {
 
 
 
-        /* ==================================================
-        * Fixed Colliders/Barriers
-        * ================================================= */
+        /*╭─────────────────────────────────────────────────────╮
+        * │ Fixed Colliders/Barriers                            │
+        * ╰─────────────────────────────────────────────────────╯ */
 
         // Ground Collison 
         this.physics.add.collider(my.sprite.player, this.groundLayer);
@@ -245,9 +247,9 @@ class Platformer extends Phaser.Scene {
 
 
 
-        /* ==================================================
-        * Collidable Objects
-        * ================================================= */
+        /*╭─────────────────────────────────────────────────────╮
+        * │ Collidable Objects                                  │
+        * ╰─────────────────────────────────────────────────────╯ */
 
         // Coin overlap
         this.physics.add.overlap(my.sprite.player, this.coinGroup, (obj1, obj2) => {
@@ -279,7 +281,7 @@ class Platformer extends Phaser.Scene {
     onLevelComplete() {}
 
 
-    // INPUT ---------------------------------------------------------
+    // ⌨️ INPUT ────────────────────────────────────────────────────────────────────────────────
 
     setupInput() {
         cursors = this.input.keyboard.createCursorKeys();
@@ -295,13 +297,13 @@ class Platformer extends Phaser.Scene {
     }
 
 
-    // VFX/Particles ---------------------------------------------------------
+    // 🧋 VFX / PARTICLES ────────────────────────────────────────────────────────────────────────────────
 
     setupVFX() {
 
-    /* ==================================================
-    * Create Walking Particles 
-    * ================================================= */
+    /*╭─────────────────────────────────────────────────────╮
+    * │ Create Walking Particles                            │
+    * ╰─────────────────────────────────────────────────────╯ */
         my.vfx.walking = this.add.particles(0, 0, "kenny-particles", {
             frame: ['smoke_03.png', 'smoke_09.png'],
             random: true,
@@ -314,21 +316,18 @@ class Platformer extends Phaser.Scene {
         my.vfx.walking.stop();
 
 
-    /* ==================================================
-    * Create Bubble Particles (Overrides)
-    * ================================================= */
+    /*╭─────────────────────────────────────────────────────╮
+    * │ Create Bubble Particles                             │
+    * ╰─────────────────────────────────────────────────────╯ */
         // Placeholder water emitter - subclasses destroy and replace this
         my.vfx.water = this.add.particles(0, 0, "kenny-particles", {
-            frame: "bubble_01.png",
+            frame: "circle_01.png",
         });
     }
 
-    /* ==================================================
-    * Create Bubble Particles
-    * ================================================= */
     createBubbleEmitter(xMin, xMax) {
         return this.add.particles(0, 0, "kenny-particles", {
-            frame: "bubble_01.png",
+            frame: "circle_01.png",
             x: { min: xMin, max: xMax },
             y: { min: 1200, max: 900 },
             lifespan: 1200,
@@ -344,9 +343,9 @@ class Platformer extends Phaser.Scene {
     }
 
 
-    /* ==================================================
-    *  Start/Stop Water VFX
-    * ================================================= */
+    /*╭─────────────────────────────────────────────────────╮
+    * │ Start/Stop Water VFX                                │
+    * ╰─────────────────────────────────────────────────────╯ */
     startWaterVFX() {
         if (Array.isArray(my.vfx.water)) {
             my.vfx.water.forEach(emitter => emitter.start());
@@ -364,12 +363,12 @@ class Platformer extends Phaser.Scene {
     }
 
 
-    // AUDIO ---------------------------------------------------------
+    // 🔊 AUDIO ────────────────────────────────────────────────────────────────────────────────
 
 
-    /* ==================================================
-    * Create Audio 
-    * ================================================= */
+    /*╭─────────────────────────────────────────────────────╮
+    * │ Create Audio                                        │
+    * ╰─────────────────────────────────────────────────────╯ */
     setupAudio() {
 
         this.sound.add('jump');
@@ -394,9 +393,9 @@ class Platformer extends Phaser.Scene {
         this.stepDelay = 250;
     }
 
-    /* ==================================================
-    * Play Audio 
-    * ================================================= */
+    /*╭─────────────────────────────────────────────────────╮
+    * │ Play Audio                                          │
+    * ╰─────────────────────────────────────────────────────╯ */
     playFootstep() {
         Phaser.Utils.Array.GetRandom(this.walkSounds).play();
     }
@@ -418,11 +417,11 @@ class Platformer extends Phaser.Scene {
     }
 
 
-    // CAMERA ---------------------------------------------------------
+    // 🎥 CAMERA ────────────────────────────────────────────────────────────────────────────────
 
-    /* ==================================================
-    * Create Camera
-    * ================================================= */
+    /*╭─────────────────────────────────────────────────────╮
+    * │ Create Camera                                       │
+    * ╰─────────────────────────────────────────────────────╯ */
     setupCamera() {
         this.cameras.main.startFollow(my.sprite.player, true, 0.25, 0.25);
         this.cameras.main.setBounds(0, 0, this.map.widthInPixels * this.SCALE, this.map.heightInPixels * this.SCALE);
@@ -432,13 +431,15 @@ class Platformer extends Phaser.Scene {
     }
 
 
+    // 🔁 UPDATE LOOP ────────────────────────────────────────────────────────────────────────────────
+
     update() {
 
 
 
-        /* ==================================================
-        * World Bounds
-        * ================================================= */
+        /*╭─────────────────────────────────────────────────────╮
+        * │ World Bounds                                        │
+        * ╰─────────────────────────────────────────────────────╯ */
         // If out of bounds, kill player
         if (my.sprite.player.y > this.physics.world.bounds.height + 200) {
             my.score = this.savedScore;
@@ -447,9 +448,9 @@ class Platformer extends Phaser.Scene {
         }
 
 
-        /* ==================================================
-        * Water Updates
-        * ================================================= */
+        /*╭─────────────────────────────────────────────────────╮
+        * │ Water Updates                                       │
+        * ╰─────────────────────────────────────────────────────╯ */
 
         // Water check
         let touchingWater = false;
@@ -477,11 +478,9 @@ class Platformer extends Phaser.Scene {
         }
 
 
-
-
-        /* ==================================================
-        * UI/Cloud Updates
-        * ================================================= */
+        /*╭─────────────────────────────────────────────────────╮
+        * │ UI/Cloud Updates                                    │
+        * ╰─────────────────────────────────────────────────────╯ */
         this.clouds.tilePositionX = this.cameras.main.scrollX * 0.1;
 
         if (my.settings.fps && this.fpsText) {
@@ -493,9 +492,9 @@ class Platformer extends Phaser.Scene {
             this.scene.launch('pauseScene');
         }
 
-        /* ==================================================
-        * Player Movement Updates
-        * ================================================= */
+        /*╭─────────────────────────────────────────────────────╮
+        * │ 🏃🏼 Player Movement Updates                          │
+        * ╰─────────────────────────────────────────────────────╯ */
         if (this.aKey.isDown || cursors.left.isDown) {
             my.sprite.player.setAccelerationX(-this.ACCELERATION);
             my.sprite.player.resetFlip();

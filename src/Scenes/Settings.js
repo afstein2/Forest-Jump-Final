@@ -13,6 +13,11 @@ class Settings extends Phaser.Scene {
         const w = this.scale.width;
         const h = this.scale.height;
 
+
+        // State
+        this.fpsEnabled = false;
+        this.fullscreenEnabled = false;
+
         // Title
         this.add.text(w / 2, h / 4, 'Settings', {
             fontFamily: 'Arial',
@@ -22,7 +27,10 @@ class Settings extends Phaser.Scene {
             strokeThickness: 3,
         }).setOrigin(0.5);
 
-        // Panel
+
+        /*╭─────────────────────────────────────────────────────╮
+        * │ Panel                                               │
+        * ╰─────────────────────────────────────────────────────╯ */
         const panelWidth = 400;
         const panelHeight = 220;
         const panel = this.add.graphics();
@@ -36,10 +44,15 @@ class Settings extends Phaser.Scene {
         );
 
 
+        /*╭─────────────────────────────────────────────────────╮
+        * │ ⚙️ Toggles and Buttons                                 │
+        * ╰─────────────────────────────────────────────────────╯ */
+        
         // Show FPS toggle
         const fpsLabel = my.settings.showFPS ? 'Show FPS: ON' : 'Show FPS: OFF';
         ButtonUI.create(this, w / 2, h / 2, fpsLabel, () => {
             my.settings.showFPS = !my.settings.showFPS;
+            my.settings.fps = true;
             this.scene.restart(); // Re-render the button label
         });
 
