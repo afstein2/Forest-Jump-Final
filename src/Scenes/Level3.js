@@ -10,7 +10,7 @@ class Level3 extends Platformer {
     }
 
     setupMap() {
-        this.map = this.add.tilemap("platformer-level-2", 18, 18, 45, 25); // Using platformer-level-2 for placeholder
+        this.map = this.add.tilemap("platformer-level-3", 18, 18, 45, 25); 
         this.tileset = this.map.addTilesetImage("kenny_tilemap_packed", "tilemap_tiles");
         this.cameras.main.setBackgroundColor('#73bde2');
 
@@ -20,7 +20,12 @@ class Level3 extends Platformer {
         this.groundLayer.setCollisionByProperty({ collides: true });
         this.groundLayer.setScale(this.SCALE);
 
-        this.playerStart = { x: game.config.width / 4, y: 930 };
+        const spawnObj = this.map.getObjectLayer("Objects").objects.find(o => o.name === "spawn");
+        if (spawnObj) {
+            this.playerStart = { x: spawnObj.x * this.SCALE, y: spawnObj.y * this.SCALE };
+        } else {
+            this.playerStart = { x: game.config.width / 4, y: 930 };
+        }
 
     }
 

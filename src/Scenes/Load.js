@@ -22,6 +22,8 @@ class Load extends Phaser.Scene {
         this.load.image("bgmap_tiles", "foliagePack_vector.svg");
         this.load.tilemapTiledJSON("platformer-level-1", "platformer-level-1.tmj");   // Lvl 1 Tilemap in JSON
         this.load.tilemapTiledJSON("platformer-level-2", "platformer-level-2.tmj");   // Lvl 2 Tilemap in JSON
+        this.load.tilemapTiledJSON("platformer-level-3", "platformer-level-3.tmj");   // Lvl 3 Tilemap in JSON
+
         this.load.image("coin_icon", "Textures/Coin.png");
 
         this.load.image('clouds', 'Textures/clouds_small.png');

@@ -22,7 +22,14 @@ class Level2 extends Platformer {
         this.groundLayer.setCollisionByProperty({ collides: true });
         this.groundLayer.setScale(this.SCALE);
 
-        this.playerStart = { x: game.config.width / 4, y: 930 };
+        const spawnObj = this.map.getObjectLayer("Objects").objects.find(o => o.name === "spawn");
+
+        if (spawnObj) {
+            this.playerStart = { x: spawnObj.x * this.SCALE, y: spawnObj.y * this.SCALE };
+        } else {
+            this.playerStart = { x: game.config.width / 4, y: 930 };
+            console.warn("No spawn point found in object layer! Defaulting to ", this.playerStart);
+        }
 
     }
 
@@ -37,10 +44,13 @@ class Level2 extends Platformer {
     setupVFX() {
         super.setupVFX();
         my.vfx.water.destroy();
-        my.vfx.water = [
-            this.createBubbleEmitter(1400, 1700),
-            this.createBubbleEmitter(2000, 2300)
-        ];
+        const emitter1 = this.createBubbleEmitter(1400, 1700);
+        const emitter2 = this.createBubbleEmitter(2000, 2300);
+        my.vfx.water = [emitter1, emitter2];
+        if (this.waterZones.length >= 2) {
+            this.zoneEmitterMap.set(this.waterZones[0], emitter1);
+            this.zoneEmitterMap.set(this.waterZones[1], emitter2);
+        }
     }
 
 

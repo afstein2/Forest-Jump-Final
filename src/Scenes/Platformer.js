@@ -132,8 +132,9 @@ class Platformer extends Phaser.Scene {
     setupObjects() {
 
         // Defaults - subclasses populate via setupWaterZones()
-        this.waterZone = null;
+        this.waterZones = [];
         this.waterBarriers = [];
+        this.zoneEmitterMap = new Map();
 
 
 
@@ -174,8 +175,50 @@ class Platformer extends Phaser.Scene {
             spike.x *= this.SCALE;
             spike.y *= this.SCALE;
         });
+
+
         this.physics.world.enable(this.spikes, Phaser.Physics.Arcade.STATIC_BODY);
         this.spikeGroup = this.add.group(this.spikes);
+
+
+        // Player Spawn
+        // const pSpawn = map.findObject("Objects", obj => obj.name === "spawn")
+        // this.p = this.physics.add.sprite(pSpawn.x, pSpawn.y, "kenney_sheet", 450)
+
+
+        // Cave Entrance trigger object (tiled point)
+        // this.caveTriggers = this.map.createFromObjects("Objects", {
+        //     name: "caveEntrance", key: "tilemap_sheet", frame: 111
+        // });
+
+        // this.caveTriggers.forEach((caveEntrance) => {
+        //     caveEntrance.setScale(this.SCALE);
+        //     caveEntrance.x *= this.SCALE;
+        //     caveEntrance.y *= this.SCALE;
+        // });
+        // this.physics.world.enable(this.caveTriggers, Phaser.Physics.Arcade.STATIC_BODY);
+        // this.caveTriggerGroup = this.add.group(this.caveTriggers);
+
+
+        // Moving Platforms
+        this.platforms = this.map.createFromObjects("Objects", {
+            name: "platform",
+            key: "tilemap_sheet",
+            frame: 49
+        });
+
+        this.platforms.forEach(platform => {
+            platform.setScale(this.SCALE);
+            platform.x *= this.SCALE;
+            platform.y *= this.SCALE;
+        });
+
+        this.physics.world.enable(
+            this.platforms,
+            Phaser.Physics.Arcade.STATIC_BODY
+        );
+
+        this.platformGroup = this.add.group(this.platforms);
     }
 
 
@@ -187,7 +230,7 @@ class Platformer extends Phaser.Scene {
     // Barriers are stored and wired to the player later in setupPlayer()
     setupWaterZones(configs) {
 
-        const zoneObjects = configs.map(cfg => {
+        configs.forEach(cfg => {
 
             const barrier = this.add.zone(cfg.x, cfg.barrierY, cfg.width, 10);
             this.physics.world.enable(barrier);
@@ -202,16 +245,8 @@ class Platformer extends Phaser.Scene {
             zone.body.setImmovable(true);
             zone.body.moves = false;
 
-            return zone;
+            this.waterZones.push(zone);
         });
-
-        if (zoneObjects.length === 1) {
-            this.waterZone = zoneObjects[0];
-        } 
-        
-        else {
-            this.waterZone = this.add.group(zoneObjects);
-        }
     }
 
 
@@ -273,6 +308,10 @@ class Platformer extends Phaser.Scene {
             this.playDeath();
         });
 
+        // Cave entrance overlap
+        // this.physics.add.overlap(my.sprite.player, this.caveEntGroup, () => {
+        //     console.log("Collided with cave entrance");
+        // });
 
     }
 
@@ -294,6 +333,22 @@ class Platformer extends Phaser.Scene {
             this.physics.world.drawDebug = !this.physics.world.drawDebug;
             this.physics.world.debugGraphic.clear();
         }, this);
+
+        // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx */
+        // Keybinds For testing [REMOVE WHEN DONE TESTING!!!]
+        // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx */
+        this.input.keyboard.on('keydown-ONE', () => {
+            this.scene.start('platformerScene');
+        }, this);
+
+        this.input.keyboard.on('keydown-TWO', () => {
+            this.scene.start('platformerScene2');
+        }, this);
+
+        this.input.keyboard.on('keydown-THREE', () => {
+            this.scene.start('platformerScene3');
+        }, this);
+
     }
 
 
@@ -346,17 +401,21 @@ class Platformer extends Phaser.Scene {
     /*╭─────────────────────────────────────────────────────╮
     * │ Start/Stop Water VFX                                │
     * ╰─────────────────────────────────────────────────────╯ */
-    startWaterVFX() {
-        if (Array.isArray(my.vfx.water)) {
-            my.vfx.water.forEach(emitter => emitter.start());
+    startWaterVFX(emitter) {
+        if (emitter) {
+            emitter.start();
+        } else if (Array.isArray(my.vfx.water)) {
+            my.vfx.water.forEach(e => e.start());
         } else {
             my.vfx.water.start();
         }
     }
 
-    stopWaterVFX() {
-        if (Array.isArray(my.vfx.water)) {
-            my.vfx.water.forEach(emitter => emitter.stop());
+    stopWaterVFX(emitter) {
+        if (emitter) {
+            emitter.stop();
+        } else if (Array.isArray(my.vfx.water)) {
+            my.vfx.water.forEach(e => e.stop());
         } else {
             my.vfx.water.stop();
         }
@@ -455,19 +514,22 @@ class Platformer extends Phaser.Scene {
         // Water check
         let touchingWater = false;
 
-        if (this.waterZone) {
-            touchingWater = this.physics.overlap(my.sprite.player, this.waterZone);
-        }
+        for (const zone of this.waterZones) {
+            const overlapping = this.physics.overlap(my.sprite.player, zone);
+            const emitter = this.zoneEmitterMap.get(zone);
 
-        if (!touchingWater) {
-            this.stopWaterVFX();
+            if (overlapping) {
+                touchingWater = true;
+                if (emitter && !emitter.emitting) emitter.start();
+            } else {
+                if (emitter && emitter.emitting) emitter.stop();
+            }
         }
 
         // Enter water
         if (touchingWater && !this.inWater) {
             this.inWater = true;
             this.playWater();
-            this.startWaterVFX();
             this.physics.world.gravity.y = 400;
         }
         // Exit water

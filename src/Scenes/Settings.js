@@ -45,7 +45,7 @@ class Settings extends Phaser.Scene {
 
 
         /*╭─────────────────────────────────────────────────────╮
-        * │ ⚙️ Toggles and Buttons                                 │
+        * │ ⚙️ Toggles and Buttons                              │
         * ╰─────────────────────────────────────────────────────╯ */
         
         // Show FPS toggle

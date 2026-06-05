@@ -226,6 +226,32 @@
                  "width":18,
                  "x":522,
                  "y":630
+                }, 
+                {
+                 "height":0,
+                 "id":19,
+                 "name":"enterCave",
+                 "opacity":1,
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1164.5,
+                 "y":696
+                }, 
+                {
+                 "height":0,
+                 "id":20,
+                 "name":"spawn",
+                 "opacity":1,
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":90,
+                 "y":630
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -234,7 +260,7 @@
          "y":0
         }],
  "nextlayerid":3,
- "nextobjectid":16,
+ "nextobjectid":21,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.1",
