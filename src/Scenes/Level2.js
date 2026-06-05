@@ -39,6 +39,15 @@ class Level2 extends Platformer {
             { x: 1550, barrierY: 1080, zoneY: 1000, width: 380, height: 120 },
             { x: 2150, barrierY: 1080, zoneY: 1000, width: 380, height: 120 }
         ]);
+
+        const caveObj = this.map.getObjectLayer("Objects").objects.find(o => o.name === "enterCave");
+        if (caveObj) {
+            this.caveZone = this.add.zone(caveObj.x * this.SCALE, caveObj.y * this.SCALE, 18 * this.SCALE, 18 * this.SCALE);
+            this.physics.world.enable(this.caveZone);
+            this.caveZone.body.setAllowGravity(false);
+            this.caveZone.body.setImmovable(true);
+            this.caveZone.body.moves = false;
+        }
     }
 
     setupVFX() {
@@ -50,6 +59,15 @@ class Level2 extends Platformer {
         if (this.waterZones.length >= 2) {
             this.zoneEmitterMap.set(this.waterZones[0], emitter1);
             this.zoneEmitterMap.set(this.waterZones[1], emitter2);
+        }
+    }
+
+    setupPlayer() {
+        super.setupPlayer();
+        if (this.caveZone) {
+            this.physics.add.overlap(my.sprite.player, this.caveZone, () => {
+                console.log("triggered cave entrance");
+            });
         }
     }
 
