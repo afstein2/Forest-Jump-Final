@@ -19,10 +19,15 @@ class Load extends Phaser.Scene {
 
         // Load tilemap information
         this.load.image("tilemap_tiles", "tilemap_packed.png");                       // Packed tilemap
-        this.load.image("bgmap_tiles", "foliagePack_vector.svg");
+        this.load.image("industrial_tiles", "tilemap_industrial_packed.png");         // Industrial tilemap
+        this.load.image("block_tiles", "blocks_packed.png");         // Block tilemap
         this.load.tilemapTiledJSON("platformer-level-1", "platformer-level-1.tmj");   // Lvl 1 Tilemap in JSON
         this.load.tilemapTiledJSON("platformer-level-2", "platformer-level-2.tmj");   // Lvl 2 Tilemap in JSON
         this.load.tilemapTiledJSON("platformer-level-3", "platformer-level-3.tmj");   // Lvl 3 Tilemap in JSON
+        //this.load.tilemapTiledJSON("platformer-level-4", "platformer-level-4.tmj");   // Lvl 4 Tilemap in JSON
+        //this.load.tilemapTiledJSON("platformer-level-5", "platformer-level-5.tmj");   // Lvl 5 Tilemap in JSON
+
+        this.load.tilemapTiledJSON("cave-level", "cave-level.tmj");                   // Cave tilemap
 
         this.load.image("coin_icon", "Textures/Coin.png");
 
@@ -47,6 +52,11 @@ class Load extends Phaser.Scene {
 
         // Load the tilemap as a spritesheet
         this.load.spritesheet("tilemap_sheet", "tilemap_packed.png", {
+            frameWidth: 18,
+            frameHeight: 18
+        });
+
+        this.load.spritesheet("industrial_sheet", "tilemap_industrial_packed.png", {
             frameWidth: 18,
             frameHeight: 18
         });

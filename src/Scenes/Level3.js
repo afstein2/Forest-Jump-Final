@@ -19,14 +19,6 @@ class Level3 extends Platformer {
         console.log(this.map.getObjectLayer("Objects"));
         this.groundLayer.setCollisionByProperty({ collides: true });
         this.groundLayer.setScale(this.SCALE);
-
-        const spawnObj = this.map.getObjectLayer("Objects").objects.find(o => o.name === "spawn");
-        if (spawnObj) {
-            this.playerStart = { x: spawnObj.x * this.SCALE, y: spawnObj.y * this.SCALE };
-        } else {
-            this.playerStart = { x: game.config.width / 4, y: 930 };
-        }
-
     }
 
     // setupObjects() {

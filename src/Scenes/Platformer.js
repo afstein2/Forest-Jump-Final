@@ -41,26 +41,32 @@ class Platformer extends Phaser.Scene {
 
         // world scaling
         this.SCALE = 1.5;
+
+        // visual
+        this.showClouds = true;
     }
 
     create() {
         this.setupPhysics();
         this.setupUI();
         this.setupMap();
+        this.findPlayerStart();
 
-        this.clouds = this.add.tileSprite(
-            0,
-            -this.scale.height * 0.5,
-            this.scale.width,
-            this.scale.height * 0.89,
-            'clouds'
-        )
-        .setOrigin(0, 0)
-        .setScrollFactor(0)
-        .setScale(1);
+        if (this.showClouds) {
+            this.clouds = this.add.tileSprite(
+                0,
+                -this.scale.height * 0.5,
+                this.scale.width,
+                this.scale.height * 0.89,
+                'clouds'
+            )
+            .setOrigin(0, 0)
+            .setScrollFactor(0)
+            .setScale(1);
 
-        this.clouds.tileScaleX = 0.4;
-        this.clouds.tileScaleY = 0.4;
+            this.clouds.tileScaleX = 0.4;
+            this.clouds.tileScaleY = 0.4;
+        }
 
         // Print Screen Size
         console.log("Scale width:", this.scale.width, "Scale height:", this.scale.height);
@@ -87,6 +93,15 @@ class Platformer extends Phaser.Scene {
 
     // Subclasses override this to load their own map
     setupMap() {}
+
+    findPlayerStart() {
+        const spawnObj = this.map.getObjectLayer("Objects").objects.find(o => o.name === "spawn");
+        if (spawnObj) {
+            this.playerStart = { x: spawnObj.x * this.SCALE, y: spawnObj.y * this.SCALE };
+        } else {
+            this.playerStart = { x: game.config.width / 4, y: 930 };
+        }
+    }
 
 
     // UI ────────────────────────────────────────────────────────────────────────────────
@@ -208,15 +223,23 @@ class Platformer extends Phaser.Scene {
         });
 
         this.platforms.forEach(platform => {
-            platform.setScale(this.SCALE);
+            // platform.setScale(this.SCALE);
+            platform.setScale(this.SCALE * 3, this.SCALE);
+
             platform.x *= this.SCALE;
             platform.y *= this.SCALE;
-        });
 
-        this.physics.world.enable(
-            this.platforms,
-            Phaser.Physics.Arcade.STATIC_BODY
-        );
+            this.physics.add.existing(platform);
+
+            platform.body.setAllowGravity(false);
+            platform.body.setImmovable(true);
+
+            // movement settings
+            platform.startX = platform.x;
+            platform.range = 200;
+            platform.speed = 100;
+            platform.direction = 1;
+        });
 
         this.platformGroup = this.add.group(this.platforms);
     }
@@ -313,6 +336,8 @@ class Platformer extends Phaser.Scene {
         //     console.log("Collided with cave entrance");
         // });
 
+        this.physics.add.collider(my.sprite.player, this.platformGroup);
+
     }
 
 
@@ -349,6 +374,10 @@ class Platformer extends Phaser.Scene {
             this.scene.start('platformerScene3');
         }, this);
 
+        this.input.keyboard.on('keydown-C', () => {
+            this.scene.start('caveLevelScene');
+        }, this);
+
     }
 
 
@@ -366,6 +395,7 @@ class Platformer extends Phaser.Scene {
             maxAliveParticles: 8,
             lifespan: 350,
             gravityY: -400,
+            emitting: false,
             alpha: { start: 1, end: 0.1 },
         });
         my.vfx.walking.stop();
@@ -497,6 +527,37 @@ class Platformer extends Phaser.Scene {
 
 
         /*╭─────────────────────────────────────────────────────╮
+        * │ Platform Updates                                    │
+        * ╰─────────────────────────────────────────────────────╯ */
+        this.platforms.forEach(platform => {
+
+            platform.x += platform.speed *
+                        platform.direction *
+                        (this.game.loop.delta / 1000);
+
+            if (platform.x > platform.startX + platform.range) {
+                platform.direction = -1;
+            }
+
+            if (platform.x < platform.startX - platform.range) {
+                platform.direction = 1;
+            }
+
+            platform.body.updateFromGameObject();
+
+            // Carry player along
+            if (
+                my.sprite.player.body.touching.down &&
+                platform.body.touching.up
+            ) {
+                my.sprite.player.x +=
+                    platform.speed *
+                    platform.direction *
+                    (this.game.loop.delta / 1000);
+            }
+        });
+
+        /*╭─────────────────────────────────────────────────────╮
         * │ World Bounds                                        │
         * ╰─────────────────────────────────────────────────────╯ */
         // If out of bounds, kill player
@@ -543,7 +604,9 @@ class Platformer extends Phaser.Scene {
         /*╭─────────────────────────────────────────────────────╮
         * │ UI/Cloud Updates                                    │
         * ╰─────────────────────────────────────────────────────╯ */
-        this.clouds.tilePositionX = this.cameras.main.scrollX * 0.1;
+        if (this.showClouds) {
+            this.clouds.tilePositionX = this.cameras.main.scrollX * 0.1;
+        }
 
         if (my.settings.fps && this.fpsText) {
             this.fpsText.setText(`FPS: ${Math.floor(this.game.loop.actualFps)}`);

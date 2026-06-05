@@ -21,14 +21,6 @@ class Level1 extends Platformer {
         this.groundLayer = this.map.createLayer("Ground-n-Platforms", this.tileset, 0, 0);
         this.groundLayer.setCollisionByProperty({ collides: true });
         this.groundLayer.setScale(this.SCALE);
-
-        const spawnObj = this.map.getObjectLayer("Objects").objects.find(o => o.name === "spawn");
-        if (spawnObj) {
-            this.playerStart = { x: spawnObj.x * this.SCALE, y: spawnObj.y * this.SCALE };
-        } else {
-            this.playerStart = { x: game.config.width / 4, y: 930 };
-        }
-
     }
 
 
