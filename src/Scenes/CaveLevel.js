@@ -68,7 +68,6 @@ class CaveLevel extends Platformer {
     // Disable water VFX
     setupVFX() {
         super.setupVFX();
-        my.vfx.water.destroy();
         my.vfx.water = null;
     }
 

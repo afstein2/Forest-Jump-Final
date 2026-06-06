@@ -384,13 +384,6 @@ class Platformer extends Phaser.Scene {
         my.vfx.walking.stop();
 
 
-    /*╭─────────────────────────────────────────────────────╮
-    * │ Create Bubble Particles                             │
-    * ╰─────────────────────────────────────────────────────╯ */
-        // Placeholder water emitter - subclasses destroy and replace this
-        my.vfx.water = this.add.particles(0, 0, "kenny-particles", {
-            frame: "circle_01.png",
-        });
     }
 
     createBubbleEmitter(xMin, xMax) {
@@ -419,7 +412,7 @@ class Platformer extends Phaser.Scene {
             emitter.start();
         } else if (Array.isArray(my.vfx.water)) {
             my.vfx.water.forEach(e => e.start());
-        } else {
+        } else if (my.vfx.water) {
             my.vfx.water.start();
         }
     }
@@ -429,7 +422,7 @@ class Platformer extends Phaser.Scene {
             emitter.stop();
         } else if (Array.isArray(my.vfx.water)) {
             my.vfx.water.forEach(e => e.stop());
-        } else {
+        } else if (my.vfx.water) {
             my.vfx.water.stop();
         }
     }

@@ -42,7 +42,6 @@ class Level2 extends Platformer {
 
     setupVFX() {
         super.setupVFX();
-        my.vfx.water.destroy();
         const emitter1 = this.createBubbleEmitter(1400, 1700);
         const emitter2 = this.createBubbleEmitter(2000, 2300);
 

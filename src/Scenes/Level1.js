@@ -33,7 +33,6 @@ class Level1 extends Platformer {
 
     setupVFX() {
         super.setupVFX();
-        my.vfx.water.destroy();
         my.vfx.water = this.createBubbleEmitter(2000, 2300);
         if (this.waterZones.length === 1) {
             this.zoneEmitterMap.set(this.waterZones[0], my.vfx.water);
