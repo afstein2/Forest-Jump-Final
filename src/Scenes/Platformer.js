@@ -272,6 +272,12 @@ class Platformer extends Phaser.Scene {
         my.sprite.player.setCollideWorldBounds(false); // Player World bounds
 
 
+        // const cmfltr = my.sprite.player.enableFilters().filters.internal.addColorMatrix();
+
+        // const colMat = cmfltr.colorMatrix;
+        // colMat.sepia();
+
+
 
         /*╭─────────────────────────────────────────────────────╮
         * │ Fixed Colliders/Barriers                            │
@@ -494,6 +500,8 @@ class Platformer extends Phaser.Scene {
         this.physics.world.setBounds(0, 0, this.map.widthInPixels * this.SCALE, this.map.heightInPixels * this.SCALE);
         this.cameras.main.setDeadzone(50, 50);
         this.cameras.main.setZoom(this.SCALE);
+
+
     }
 
 

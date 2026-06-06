@@ -19,6 +19,13 @@ class CaveLevel extends Platformer {
         this.showClouds = false;
     }
 
+    setupCamera() {
+        super.setupCamera();
+
+        this.cameras.main.filters.internal.addVignette(0.5, 0.5, 0.7, 0.2);
+        this.cameras.main.shake(400, 0.01);
+    }
+
     setupMap() {
         this.map = this.add.tilemap("cave-level", 18, 18, 45, 25);
 
