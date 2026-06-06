@@ -165,6 +165,7 @@ class Platformer extends Phaser.Scene {
             coin.setScale(this.SCALE);
             coin.x *= this.SCALE;
             coin.y *= this.SCALE;
+            coin.anims.play('coinSpin');
         });
         this.physics.world.enable(this.coins, Phaser.Physics.Arcade.STATIC_BODY);
         this.coinGroup = this.add.group(this.coins);
@@ -177,6 +178,7 @@ class Platformer extends Phaser.Scene {
             flag.setScale(this.SCALE);
             flag.x *= this.SCALE;
             flag.y *= this.SCALE;
+            flag.anims.play('flagWave');
         });
         this.physics.world.enable(this.flags, Phaser.Physics.Arcade.STATIC_BODY);
         this.flagGroup = this.add.group(this.flags);
@@ -194,26 +196,6 @@ class Platformer extends Phaser.Scene {
 
         this.physics.world.enable(this.spikes, Phaser.Physics.Arcade.STATIC_BODY);
         this.spikeGroup = this.add.group(this.spikes);
-
-
-        // Player Spawn
-        // const pSpawn = map.findObject("Objects", obj => obj.name === "spawn")
-        // this.p = this.physics.add.sprite(pSpawn.x, pSpawn.y, "kenney_sheet", 450)
-
-
-        // Cave Entrance trigger object (tiled point)
-        // this.caveTriggers = this.map.createFromObjects("Objects", {
-        //     name: "caveEntrance", key: "tilemap_sheet", frame: 111
-        // });
-
-        // this.caveTriggers.forEach((caveEntrance) => {
-        //     caveEntrance.setScale(this.SCALE);
-        //     caveEntrance.x *= this.SCALE;
-        //     caveEntrance.y *= this.SCALE;
-        // });
-        // this.physics.world.enable(this.caveTriggers, Phaser.Physics.Arcade.STATIC_BODY);
-        // this.caveTriggerGroup = this.add.group(this.caveTriggers);
-
 
         // Moving Platforms
         this.platforms = this.map.createFromObjects("Objects", {
@@ -330,11 +312,6 @@ class Platformer extends Phaser.Scene {
             my.score = this.savedScore;
             this.playDeath();
         });
-
-        // Cave entrance overlap
-        // this.physics.add.overlap(my.sprite.player, this.caveEntGroup, () => {
-        //     console.log("Collided with cave entrance");
-        // });
 
         this.physics.add.collider(my.sprite.player, this.platformGroup);
 

@@ -45,10 +45,38 @@ class Level2 extends Platformer {
         my.vfx.water.destroy();
         const emitter1 = this.createBubbleEmitter(1400, 1700);
         const emitter2 = this.createBubbleEmitter(2000, 2300);
+
+
+        const createBubbleEmitterIndicator = (xMin, xMax) => {
+            return this.add.particles(0, 0, "kenny-particles", {
+                frame: "light_01.png",
+                x: { min: xMin, max: xMax },
+                y: { min: 1050, max: 1000 },
+                lifespan: 800,
+                speedY: { min: -100, max: -60 },
+                speedX: { min: -10, max: 10 },
+                scale: { start: 0.08, end: 0 },
+                //alpha: { start: 0.8, end: 0 },
+                tint: 0xbf00ff, // red
+                quantity: 1,
+                frequency: 80,
+                blendMode: 'ADD',
+                emitting: true
+            });
+        };
+
+        const emitter3 = createBubbleEmitterIndicator(1735, 1740);
+
+
+
+
+
+
         my.vfx.water = [emitter1, emitter2];
         if (this.waterZones.length >= 2) {
             this.zoneEmitterMap.set(this.waterZones[0], emitter1);
             this.zoneEmitterMap.set(this.waterZones[1], emitter2);
+            //this.zoneEmitterMap.set(this.waterZones[2], emitter3);
         }
     }
 
@@ -57,6 +85,7 @@ class Level2 extends Platformer {
         if (this.caveZone) {
             this.physics.add.overlap(my.sprite.player, this.caveZone, () => {
                 console.log("triggered cave entrance");
+                this.scene.start("caveLevelScene");
             });
         }
     }
