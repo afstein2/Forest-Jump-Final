@@ -211,6 +211,19 @@ class Platformer extends Phaser.Scene {
             spike.y *= this.SCALE;
         });
 
+        // // Water Top
+        // this.watertops = this.map.createFromObjects("Objects", {
+        //     name: "watertop", key: "tilemap_sheet", frame: 33
+        // });
+        // this.watertops.forEach((watertop) => {
+        //     watertop.setScale(this.SCALE);
+        //     watertop.x *= this.SCALE;
+        //     watertop.y *= this.SCALE;
+        //     watertop.anims.play('waterAnim');
+        // });
+
+
+
 
         this.physics.world.enable(this.spikes, Phaser.Physics.Arcade.STATIC_BODY);
         this.spikeGroup = this.add.group(this.spikes);

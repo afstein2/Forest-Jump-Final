@@ -467,8 +467,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":15,
- "nextobjectid":67,
+ "nextlayerid":16,
+ "nextobjectid":81,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.1",
@@ -566,6 +566,18 @@
                          "type":"bool",
                          "value":true
                         }]
+                }, 
+                {
+                 "animation":[
+                        {
+                         "duration":300,
+                         "tileid":33
+                        }, 
+                        {
+                         "duration":300,
+                         "tileid":53
+                        }],
+                 "id":33
                 }, 
                 {
                  "id":40,

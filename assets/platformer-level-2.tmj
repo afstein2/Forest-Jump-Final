@@ -360,6 +360,18 @@
                         }]
                 }, 
                 {
+                 "animation":[
+                        {
+                         "duration":300,
+                         "tileid":33
+                        }, 
+                        {
+                         "duration":300,
+                         "tileid":53
+                        }],
+                 "id":33
+                }, 
+                {
                  "id":40,
                  "properties":[
                         {

@@ -14,6 +14,8 @@ class Load extends Phaser.Scene {
     preload() {
         this.load.setPath("./assets/");
 
+        // Load the animated tiles plugin
+        this.load.scenePlugin('AnimatedTiles', './lib/AnimatedTiles.js', 'animatedTiles', 'animatedTiles');
         // Load characters spritesheet
         this.load.atlas("platformer_characters", "tilemap-characters-packed.png", "tilemap-characters-packed.json");
 
@@ -32,6 +34,7 @@ class Load extends Phaser.Scene {
         this.load.image("coin_icon", "Textures/Coin.png");
 
         this.load.image('clouds', 'Textures/clouds_small.png');
+        //this.load.image('clouds2', 'Textures/clouds_small.png');
 
 
         // Load audio
@@ -114,6 +117,17 @@ class Load extends Phaser.Scene {
             frameRate: 4,
             repeat: -1
         });
+
+
+        //  this.anims.create({
+        //     key: 'waterAnim',
+        //     frames: this.anims.generateFrameNumbers('tilemap_sheet', {
+        //         start: 33,
+        //         end: 34
+        //     }),
+        //     frameRate: 4,
+        //     repeat: -1
+        // });
 
          // ...and pass to the next Scene
          this.scene.start("platformerScene");
