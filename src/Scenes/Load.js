@@ -24,7 +24,7 @@ class Load extends Phaser.Scene {
         this.load.tilemapTiledJSON("platformer-level-1", "platformer-level-1.tmj");   // Lvl 1 Tilemap in JSON
         this.load.tilemapTiledJSON("platformer-level-2", "platformer-level-2.tmj");   // Lvl 2 Tilemap in JSON
         this.load.tilemapTiledJSON("platformer-level-3", "platformer-level-3.tmj");   // Lvl 3 Tilemap in JSON
-        //this.load.tilemapTiledJSON("platformer-level-4", "platformer-level-4.tmj");   // Lvl 4 Tilemap in JSON
+        this.load.tilemapTiledJSON("platformer-level-4", "platformer-level-4.tmj");   // Lvl 4 Tilemap in JSON
         //this.load.tilemapTiledJSON("platformer-level-5", "platformer-level-5.tmj");   // Lvl 5 Tilemap in JSON
 
         this.load.tilemapTiledJSON("cave-level", "cave-level.tmj");                   // Cave tilemap

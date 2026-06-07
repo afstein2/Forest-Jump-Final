@@ -37,6 +37,10 @@ let config = {
         }
     },
 
+    // input: {
+    //     gamepad: true,
+    // },
+
     // plugins: {
     //     scene: [
     //         {
@@ -53,7 +57,7 @@ let config = {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
-    scene: [StartScreen, Load, Platformer, Level1, Level2, Level3, CaveLevel, WinScene, PauseMenu, Settings, Controls]
+    scene: [StartScreen, Load, Platformer, Level1, Level2, Level3, Level4, CaveLevel, WinScene, PauseMenu, Settings, Controls]
 }
 
 const game = new Phaser.Game(config);

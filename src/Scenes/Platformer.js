@@ -34,7 +34,18 @@ class Platformer extends Phaser.Scene {
         this.DRAG = 500;    // DRAG < ACCELERATION = icy slide
         this.physics.world.gravity.y = 1500;
         this.JUMP_VELOCITY = -700;
+        this.HIGH_JUMP_VELOCITY = -1100;
+        this.DASH_SPEED = 600;
+        this.DASH_DURATION = 150;
         this.inWater = false;
+        this.canDash = true;
+        this._dashTimer = null;
+
+        this.playerState = new StateMachine([
+            { name: 'normal', initial: true, events: { jumpHigh: 'highJump', dash: 'dashing' } },
+            { name: 'highJump', events: { land: 'normal', dash: 'dashing' } },
+            { name: 'dashing', events: { dashEnd: 'normal' } }
+        ]);
 
         // particles
         this.PARTICLE_VELOCITY = 50;
@@ -47,6 +58,13 @@ class Platformer extends Phaser.Scene {
     }
 
     create() {
+
+
+        // this.input.gamepad.once('connected', (pad) => {
+        //     console.log('Controller connected:', pad.id);
+        //     // You can assign this pad to a player
+        // });
+
         this.setupPhysics();
         this.setupUI();
         this.setupMap();
@@ -336,6 +354,8 @@ class Platformer extends Phaser.Scene {
         this.pKey = this.input.keyboard.addKey('P');
         this.aKey = this.input.keyboard.addKey('A');
         this.dKey = this.input.keyboard.addKey('D');
+        this.shiftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
+        this.xKey = this.input.keyboard.addKey('X');
 
         this.input.keyboard.on('keydown-O', () => {
             this.physics.world.drawDebug = !this.physics.world.drawDebug;
@@ -357,6 +377,9 @@ class Platformer extends Phaser.Scene {
             this.scene.start('platformerScene3');
         }, this);
 
+        this.input.keyboard.on('keydown-FOUR', () => {
+            this.scene.start('platformerScene4');
+        }, this);
         this.input.keyboard.on('keydown-C', () => {
             this.scene.start('caveLevelScene');
         }, this);
@@ -637,12 +660,44 @@ class Platformer extends Phaser.Scene {
 
         if (!my.sprite.player.body.blocked.down) {
             my.sprite.player.anims.play('jump');
+        } else {
+            if (this.playerState.getState().name === 'highJump') {
+                this.playerState.consumeEvent('land');
+            }
+            this.canDash = true;
         }
 
         if (my.sprite.player.body.blocked.down &&
             (Phaser.Input.Keyboard.JustDown(cursors.space) || Phaser.Input.Keyboard.JustDown(cursors.up))) {
-            my.sprite.player.body.setVelocityY(this.JUMP_VELOCITY);
+            if (this.shiftKey.isDown) {
+                this.playerState.consumeEvent('jumpHigh');
+            }
+            const velocity = this.playerState.getState().name === 'highJump'
+                ? this.HIGH_JUMP_VELOCITY : this.JUMP_VELOCITY;
+            my.sprite.player.body.setVelocityY(velocity);
             this.playJump();
+        }
+
+        // Dash
+        if (Phaser.Input.Keyboard.JustDown(this.xKey) && this.canDash && this.playerState.getState().name !== 'dashing') {
+            this.playerState.consumeEvent('dash');
+            this.canDash = false;
+
+            let dirX = 0;
+            if (this.aKey.isDown || cursors.left.isDown) dirX = -1;
+            else if (this.dKey.isDown || cursors.right.isDown) dirX = 1;
+            else dirX = my.sprite.player.flipX ? -1 : 1;
+
+            my.sprite.player.body.setVelocityX(this.DASH_SPEED * dirX);
+            my.sprite.player.body.setVelocityY(0);
+            my.sprite.player.body.setAllowGravity(false);
+            my.sprite.player.setTint(0x00ffff);
+
+            this._dashTimer = this.time.delayedCall(this.DASH_DURATION, () => {
+                my.sprite.player.body.setAllowGravity(true);
+                my.sprite.player.clearTint();
+                this.playerState.consumeEvent('dashEnd');
+            });
         }
 
         // Restart Level
