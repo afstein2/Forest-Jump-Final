@@ -39,6 +39,27 @@ class Level1 extends Platformer {
         }
     }
 
+    setupPlayer() {
+        super.setupPlayer();
+
+
+        const controlsText = this.add.text(
+            game.config.width / 4.8, game.config.height / 1.3,
+            'Space = Jump | A/D Left/Right', {
+            fontSize: '24px',
+            fill: '#ffffff'
+        }).setScrollFactor(0).setDepth(200).setScale(1);
+
+        this.tweens.add({
+            targets: controlsText,
+            alpha: 0,
+            delay: 3000,
+            duration: 1000,
+            onComplete: () => controlsText.destroy()
+        });
+
+    }
+
     
 
     onLevelComplete() {

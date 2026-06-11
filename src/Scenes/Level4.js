@@ -1,7 +1,5 @@
 /**
- * Level3.js — third (and final) platforming level.
- *
- * Similar to Level3 but ....
+ * Level4.js 
  */
 
 class Level4 extends Platformer {
@@ -14,12 +12,28 @@ class Level4 extends Platformer {
         super.init();
         this.showClouds = false;
         this.showClouds2 = true;
+        this.canHighJump = true;
     }
 
     create() {
         super.create();
 
         this.showClouds = false;
+
+        const controlsText = this.add.text(
+            game.config.width / 4.8, game.config.height / 1.3,
+            'SHIFT+JUMP = High Jump', {
+            fontSize: '24px',
+            fill: '#ffffff'
+        }).setScrollFactor(0).setDepth(200).setScale(1);
+
+        this.tweens.add({
+            targets: controlsText,
+            alpha: 0,
+            delay: 3000,
+            duration: 1000,
+            onComplete: () => controlsText.destroy()
+        });
         
 
         if (this.showClouds2) {
@@ -53,24 +67,6 @@ class Level4 extends Platformer {
         this.groundLayer.setCollisionByProperty({ collides: true });
         this.groundLayer.setScale(this.SCALE);
     }
-
-    // setupObjects() {
-    //     super.setupObjects();
-    //     this.setupWaterZones([
-    //         { x: 1550, barrierY: 1080, zoneY: 1000, width: 380, height: 120 },
-    //         { x: 2150, barrierY: 1080, zoneY: 1000, width: 380, height: 120 }
-    //     ]);
-    // }
-
-    // setupVFX() {
-    //     super.setupVFX();
-    //     my.vfx.water.destroy();
-    //     my.vfx.water = [
-    //         this.createBubbleEmitter(1400, 1700),
-    //         this.createBubbleEmitter(2000, 2300)
-    //     ];
-    // }
-
 
     onLevelComplete() {
         my.scoreCarryOver = true;

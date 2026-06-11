@@ -17,6 +17,8 @@ class CaveLevel extends Platformer {
     init () {
         super.init();
         this.showClouds = false;
+        this.canHighJump = true;
+        this.canDashAbility = true;
     }
 
     setupCamera() {
@@ -63,12 +65,49 @@ class CaveLevel extends Platformer {
         this.setupWaterZones([
             { x: 2150, barrierY: 1080, zoneY: 1000, width: 380, height: 120 }
         ]);
+
+        const caveExitObj = this.map.getObjectLayer("Objects").objects.find(o => o.name === "caveExit");
+        if (caveExitObj) {
+            this.caveExitZone = this.add.zone(caveExitObj.x * this.SCALE, caveExitObj.y * this.SCALE, 18 * this.SCALE, 18 * this.SCALE);
+            this.physics.world.enable(this.caveExitZone);
+            this.caveExitZone.body.setAllowGravity(false);
+            this.caveExitZone.body.setImmovable(true);
+            this.caveExitZone.body.moves = false;
+        }
     }
 
     // Disable water VFX
     setupVFX() {
         super.setupVFX();
         my.vfx.water = null;
+    }
+
+
+    setupPlayer() {
+        super.setupPlayer();
+
+        if (this.caveExitZone) {
+            this.physics.add.overlap(my.sprite.player, this.caveExitZone, () => {
+                console.log("triggered cave exit");
+                my.spawnAtCaveExit = true;
+                this.scene.start("platformerScene2");
+            });
+        }
+
+        const controlsText = this.add.text(
+            game.config.width / 4.8, game.config.height / 1.3,
+            'SHIFT+JUMP = High Jump | X = Dash', {
+            fontSize: '24px',
+            fill: '#ffffff'
+        }).setScrollFactor(0).setDepth(200).setScale(1);
+
+        this.tweens.add({
+            targets: controlsText,
+            alpha: 0,
+            delay: 3000,
+            duration: 1000,
+            onComplete: () => controlsText.destroy()
+        });
     }
 
     

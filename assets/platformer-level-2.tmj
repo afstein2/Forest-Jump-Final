@@ -252,6 +252,19 @@
                  "width":0,
                  "x":90,
                  "y":630
+                }, 
+                {
+                 "height":0,
+                 "id":22,
+                 "name":"caveExit",
+                 "opacity":1,
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1332,
+                 "y":702
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -260,7 +273,7 @@
          "y":0
         }],
  "nextlayerid":3,
- "nextobjectid":22,
+ "nextobjectid":23,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.1",

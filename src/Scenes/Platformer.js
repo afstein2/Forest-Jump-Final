@@ -42,6 +42,8 @@ class Platformer extends Phaser.Scene {
         this.inWater = false;
         this.canDash = true;
         this._dashTimer = null;
+        this.canHighJump = false;
+        this.canDashAbility = false;
 
         this.playerState = new StateMachine([
             { name: 'normal', initial: true, events: { jumpHigh: 'highJump', dash: 'dashing' } },
@@ -239,7 +241,7 @@ class Platformer extends Phaser.Scene {
 
         this.platforms.forEach(platform => {
             // platform.setScale(this.SCALE);
-            platform.setScale(this.SCALE * 3, this.SCALE);
+            platform.setScale(this.SCALE * 6, this.SCALE);
 
             platform.x *= this.SCALE;
             platform.y *= this.SCALE;
@@ -420,7 +422,7 @@ class Platformer extends Phaser.Scene {
         this.aKey = this.input.keyboard.addKey('A');
         this.dKey = this.input.keyboard.addKey('D');
         this.shiftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
-        this.xKey = this.input.keyboard.addKey('X');
+        this.xKey = this.input.keyboard.addKey('L');
 
         this.input.keyboard.on('keydown-O', () => {
             this.physics.world.drawDebug = !this.physics.world.drawDebug;
@@ -734,7 +736,7 @@ class Platformer extends Phaser.Scene {
 
         if (my.sprite.player.body.blocked.down &&
             (Phaser.Input.Keyboard.JustDown(cursors.space) || Phaser.Input.Keyboard.JustDown(cursors.up))) {
-            if (this.shiftKey.isDown) {
+            if (this.canHighJump && this.shiftKey.isDown) {
                 this.playerState.consumeEvent('jumpHigh');
             }
             const velocity = this.playerState.getState().name === 'highJump'
@@ -744,7 +746,7 @@ class Platformer extends Phaser.Scene {
         }
 
         // Dash
-        if (Phaser.Input.Keyboard.JustDown(this.xKey) && this.canDash && this.playerState.getState().name !== 'dashing') {
+        if (this.canDashAbility && Phaser.Input.Keyboard.JustDown(this.xKey) && this.canDash && this.playerState.getState().name !== 'dashing') {
             this.playerState.consumeEvent('dash');
             this.canDash = false;
 

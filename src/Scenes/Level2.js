@@ -1,5 +1,5 @@
 /**
- * Level2.js — Second (and final) platforming level.
+ * Level2.js
  *
  * Similar to Level1 but loads a different tilemap, has two water zones,
  * different bubble VFX positions, and transitions to the Win scene when
@@ -37,6 +37,16 @@ class Level2 extends Platformer {
             this.caveZone.body.setAllowGravity(false);
             this.caveZone.body.setImmovable(true);
             this.caveZone.body.moves = false;
+        }
+
+        const caveObjExit = this.map.getObjectLayer("Objects").objects.find(o => o.name === "caveExit");
+        if (caveObjExit) {
+            this.caveZoneExit = this.add.zone(caveObjExit.x * this.SCALE, caveObjExit.y * this.SCALE, 18 * this.SCALE, 18 * this.SCALE);
+            this.physics.world.enable(this.caveZoneExit);
+            this.caveZoneExit.body.setAllowGravity(false);
+            this.caveZoneExit.body.setImmovable(true);
+            this.caveZoneExit.body.moves = false;
+            my.caveExitPos = { x: caveObjExit.x * this.SCALE, y: caveObjExit.y * this.SCALE };
         }
     }
 
@@ -81,6 +91,12 @@ class Level2 extends Platformer {
 
     setupPlayer() {
         super.setupPlayer();
+
+        if (my.spawnAtCaveExit && my.caveExitPos) {
+            my.sprite.player.setPosition(my.caveExitPos.x, my.caveExitPos.y);
+            my.spawnAtCaveExit = false;
+        }
+
         if (this.caveZone) {
             this.physics.add.overlap(my.sprite.player, this.caveZone, () => {
                 console.log("triggered cave entrance");
