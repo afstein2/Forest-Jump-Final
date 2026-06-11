@@ -167,8 +167,7 @@ class PauseMenu extends Phaser.Scene {
         // Main Menu → stop everything and go to title
         ButtonUI.create(this, w / 2, h / 2 + 80, 'Main Menu', () => {
             this.scene.stop('pauseScene');
-            this.scene.stop('platformerScene');
-            this.scene.stop('platformerScene2');
+            this.scene.stop(this.levelKey);
             this.scene.start('startScene');
         });
     }

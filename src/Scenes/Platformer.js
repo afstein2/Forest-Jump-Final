@@ -29,6 +29,8 @@ class Platformer extends Phaser.Scene {
 
     init() {
 
+        my.activeLevelKey = this.scene.key;
+
         // variables and settings
         this.ACCELERATION = 400;
         this.DRAG = 500;    // DRAG < ACCELERATION = icy slide
@@ -314,8 +316,58 @@ class Platformer extends Phaser.Scene {
         * │ Fixed Colliders/Barriers                            │
         * ╰─────────────────────────────────────────────────────╯ */
 
-        // Ground Collison 
-        this.physics.add.collider(my.sprite.player, this.groundLayer);
+        /*╭─────────────────────────────────────────────────────╮
+        * │ Switch-controlled tiles                             │
+        * ╰─────────────────────────────────────────────────────╯ */
+
+        this.leftSwitchable = this.groundLayer.filterTiles((tile) => {
+            return tile.properties.switchable === "left";
+        });
+        for (let tile of this.leftSwitchable) {
+            tile.visible = false;
+        }
+
+        this.rightSwitchable = this.groundLayer.filterTiles((tile) => {
+            return tile.properties.switchable === "right";
+        });
+        for (let tile of this.rightSwitchable) {
+            tile.visible = false;
+        }
+
+        // Ground Collision with switch-aware process callback
+        let collisionProcess = (obj1, obj2) => {
+            if (obj2.properties.oneway && my.sprite.player.body.velocity.y < 0) {
+                return false;
+            }
+            if (!obj2.visible) {
+                return false;
+            }
+
+            if (obj2.properties.switch && my.sprite.player.body.acceleration.x > 0) {
+                obj2.index = 67;
+                for (let tile of this.leftSwitchable) {
+                    tile.visible = true;
+                }
+                for (let tile of this.rightSwitchable) {
+                    tile.visible = false;
+                }
+                return false;
+            }
+            if (obj2.properties.switch && my.sprite.player.body.acceleration.x < 0) {
+                obj2.index = 65;
+                for (let tile of this.leftSwitchable) {
+                    tile.visible = false;
+                }
+                for (let tile of this.rightSwitchable) {
+                    tile.visible = true;
+                }
+                return false;
+            }
+            return true;
+        };
+        
+
+        this.physics.add.collider(my.sprite.player, this.groundLayer, null, collisionProcess);
 
         // Water barrier colliders - now safe because player exists
         this.waterBarriers.forEach(barrier => {
