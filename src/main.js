@@ -29,7 +29,7 @@ let config = {
     physics: {
         default: 'arcade',
         arcade: {
-            debug: true, // <------------------------------------ CHANGE TO FALSE WHEN DONE!!!
+            debug: false, 
             gravity: {
                 x: 0,
                 y: 0
@@ -37,19 +37,6 @@ let config = {
         }
     },
 
-    // input: {
-    //     gamepad: true,
-    // },
-
-    // plugins: {
-    //     scene: [
-    //         {
-    //             key: 'AnimatedTiles',
-    //             plugin: AnimatedTiles,
-    //             mapping: 'animatedTiles'
-    //         }
-    //     ]
-    // },
 
     width: 1920, // (Default: 1920, 944), (1420, 944), (1280, 944)
     height: 944,

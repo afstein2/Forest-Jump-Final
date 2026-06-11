@@ -159,7 +159,7 @@ class Controls extends Phaser.Scene {
 
         // Panel
         const panelWidth = 650;
-        const panelHeight = 420;
+        const panelHeight = 480;
 
         const panel = this.add.graphics();
 
@@ -167,7 +167,7 @@ class Controls extends Phaser.Scene {
 
         panel.fillRoundedRect(
             centerX - panelWidth / 2,
-            centerY - panelHeight / 2,
+            centerY - panelHeight / 2.2,
             panelWidth,
             panelHeight,
             24
@@ -178,9 +178,10 @@ class Controls extends Phaser.Scene {
             ['A / ←', 'Move left'],
             ['D / →', 'Move right'],
             ['Space / ↑ / W', 'Jump'],
+            ['L', 'Dash'],
+            ['SHIFT', 'Jump Boost'],
             ['P', 'Pause'],
             ['R', 'Restart level'],
-            ['O', 'Debug physics'],
             ['F', 'Fullscreen (pause menu)'],
         ];
 

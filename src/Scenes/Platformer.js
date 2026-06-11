@@ -430,26 +430,26 @@ class Platformer extends Phaser.Scene {
         }, this);
 
         // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx */
-        // Keybinds For testing [REMOVE WHEN DONE TESTING!!!]
+        // Keybinds For testing
         // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx */
-        this.input.keyboard.on('keydown-ONE', () => {
-            this.scene.start('platformerScene');
-        }, this);
+        // this.input.keyboard.on('keydown-ONE', () => {
+        //     this.scene.start('platformerScene');
+        // }, this);
 
-        this.input.keyboard.on('keydown-TWO', () => {
-            this.scene.start('platformerScene2');
-        }, this);
+        // this.input.keyboard.on('keydown-TWO', () => {
+        //     this.scene.start('platformerScene2');
+        // }, this);
 
-        this.input.keyboard.on('keydown-THREE', () => {
-            this.scene.start('platformerScene3');
-        }, this);
+        // this.input.keyboard.on('keydown-THREE', () => {
+        //     this.scene.start('platformerScene3');
+        // }, this);
 
-        this.input.keyboard.on('keydown-FOUR', () => {
-            this.scene.start('platformerScene4');
-        }, this);
-        this.input.keyboard.on('keydown-C', () => {
-            this.scene.start('caveLevelScene');
-        }, this);
+        // this.input.keyboard.on('keydown-FOUR', () => {
+        //     this.scene.start('platformerScene4');
+        // }, this);
+        // this.input.keyboard.on('keydown-C', () => {
+        //     this.scene.start('caveLevelScene');
+        // }, this);
 
     }
 

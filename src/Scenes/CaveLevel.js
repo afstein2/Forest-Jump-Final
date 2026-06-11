@@ -24,7 +24,7 @@ class CaveLevel extends Platformer {
     setupCamera() {
         super.setupCamera();
 
-        this.cameras.main.filters.internal.addVignette(0.5, 0.5, 0.7, 0.2);
+        this.cameras.main.filters.internal.addVignette(0.5, 0.5, 0.7, 0.3);
         this.cameras.main.shake(400, 0.01);
     }
 
@@ -96,7 +96,7 @@ class CaveLevel extends Platformer {
 
         const controlsText = this.add.text(
             game.config.width / 4.8, game.config.height / 1.3,
-            'SHIFT+JUMP = High Jump | X = Dash', {
+            'SHIFT+JUMP = High Jump | L = Dash', {
             fontSize: '24px',
             fill: '#ffffff'
         }).setScrollFactor(0).setDepth(200).setScale(1);
